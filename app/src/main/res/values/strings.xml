@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">DemoApplication</string>
+    <string name="Title">Demographic Survey</string>
+    <string name="Q1">Name</string>
+    <string name="Q2">Date of Birth</string>
+    <string name="Q3">Gender</string>
+    <string name="Q4">Country</string>
+    <string name="Q5">City</string>
+    <string name="Q6">Region</string>
+
+</resources>
