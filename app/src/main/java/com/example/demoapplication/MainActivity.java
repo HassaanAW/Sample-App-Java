@@ -2,6 +2,7 @@ package com.example.demoapplication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button next;
     private EditText name, country, city, DOB;
-    private String get_gender, get_date;
+    private String get_gender, get_date, get_name, get_country, get_city;
     private RadioButton option_male, option_female, option_others;
 
     @Override
@@ -40,51 +41,63 @@ public class MainActivity extends AppCompatActivity {
         option_female = (RadioButton) findViewById(R.id.female);
         option_others = (RadioButton) findViewById(R.id.others);
 
-        next.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String get_name = name.getText().toString();
-                String get_city = city.getText().toString();
-                String get_country = country.getText().toString();
-                // Log.d("MyApp",get_name + get_city + get_country);
+        try {
+            get_name = getIntent().getStringExtra("Name");
+            get_country = getIntent().getStringExtra("Country");
+            get_city = getIntent().getStringExtra("City");
+            //get_gender = getIntent().getStringExtra("Gender");
+            get_date = getIntent().getStringExtra("DOB");
 
-                // Getting Date
-                DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
-                Date dateObject;
-                try {
-                    String dob_var = (DOB.getText().toString());
-                    dateObject = formatter.parse(dob_var);
-                    get_date = new SimpleDateFormat("dd/MM/yyyy").format(dateObject);
-                    // Log.d("MyDate", get_date);
-                } catch (java.text.ParseException e) {
-                    e.printStackTrace();
-                    Log.i("ErrorInDate", e.toString());
-                }
+            name.setText(get_name);
+            DOB.setText(get_date);
+            country.setText("Pakistan");
+            city.setText(get_city);
+        }
+        catch (Exception e) {
+            System.out.println("Oops!");
+        }
+    }
 
-                // Getting Gender
-                if(option_male.isChecked()){
-                    get_gender= option_male.getText().toString();}
-                else if (option_female.isChecked()){
-                    get_gender = option_female.getText().toString();}
-                else{
-                    get_gender= option_others.getText().toString();}
+    public void onClick(View v) {
+        String get_name = name.getText().toString();
+        String get_city = city.getText().toString();
+        String get_country = country.getText().toString();
+        // Log.d("MyApp",get_name + get_city + get_country);
 
-                HashMap<String, Object> map = new HashMap<>();
-                map.put("Name", get_name);
-                map.put("Country", get_country);
-                map.put("Gender", get_gender);
-                map.put("City", get_city);
-                map.put("DOB", get_date);
+        // Getting Date
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy"); // Make sure user insert date into edittext in this format.
+        Date dateObject;
+        try {
+            String dob_var = (DOB.getText().toString());
+            dateObject = formatter.parse(dob_var);
+            get_date = new SimpleDateFormat("dd/MM/yyyy").format(dateObject);
+            // Log.d("MyDate", get_date);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+            Log.i("ErrorInDate", e.toString());
+        }
 
-                if (TextUtils.isEmpty(get_name) || TextUtils.isEmpty(get_country) || TextUtils.isEmpty(get_city) || TextUtils.isEmpty(get_date) || TextUtils.isEmpty(get_gender) ){
-                    Toast.makeText(MainActivity.this, "Please fill missing fields", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection("Participants").document("123").set(map);
-                    Toast.makeText(MainActivity.this, "Submitted", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        // Getting Gender
+        if(option_male.isChecked()){
+            get_gender= option_male.getText().toString();}
+        else if (option_female.isChecked()){
+            get_gender = option_female.getText().toString();}
+        else if (option_others.isChecked()){
+            get_gender= option_others.getText().toString();}
+
+        if (TextUtils.isEmpty(get_name) || TextUtils.isEmpty(get_country) || TextUtils.isEmpty(get_city) || TextUtils.isEmpty(get_date) || TextUtils.isEmpty(get_gender) ){
+            Toast.makeText(MainActivity.this, "Please fill missing fields", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(MainActivity.this, "Survey One complete!", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(this, TechSurvey.class);
+            intent.putExtra("Name", get_name);
+            intent.putExtra("Country", get_country);
+            intent.putExtra("Gender", get_gender);
+            intent.putExtra("City", get_city);
+            intent.putExtra("DOB", get_date);
+            startActivity(intent);
+        }
     }
 }

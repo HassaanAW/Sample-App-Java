@@ -1,11 +1,19 @@
 <resources>
     <string name="app_name">DemoApplication</string>
+    <string name="Ferret">Ferret</string>
     <string name="Title">Demographic Survey</string>
+    <string name="Title2">Tech Survey</string>
     <string name="Q1">Name</string>
     <string name="Q2">Date of Birth</string>
     <string name="Q3">Gender</string>
     <string name="Q4">Country</string>
     <string name="Q5">City</string>
     <string name="Q6">Region</string>
+    <string name="Q7">What is your current education level?</string>
+    <string name="Q8">Do you have a background in Computer Science or Engineering?</string>
+    <string name="Q9">Do you have an experience of the tech-industry?</string>
+    <string name="Q10">On a scale of 1-5, how comfortable are you with smart gadgets?</string>
+    <string name="Q11">Are you proefficient in a programming langauge?</string>
+
 
 </resources>
