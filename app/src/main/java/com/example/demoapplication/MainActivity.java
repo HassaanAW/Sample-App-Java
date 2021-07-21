@@ -14,16 +14,19 @@ import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.net.NetworkInterface;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button next;
     private EditText name, country, city, DOB;
-    private String get_gender, get_date, get_name, get_country, get_city;
+    private String get_gender, get_date, get_name, get_country, get_city, MacAdd;
     private RadioButton option_male, option_female, option_others;
 
     @Override
@@ -40,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         option_male = (RadioButton) findViewById(R.id.male);
         option_female = (RadioButton) findViewById(R.id.female);
         option_others = (RadioButton) findViewById(R.id.others);
+
+        MacAdd = getMacAddr();
+        Log.d("Mac", MacAdd);
 
         try {
             get_name = getIntent().getStringExtra("Name");
@@ -59,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) {
+
         String get_name = name.getText().toString();
         String get_city = city.getText().toString();
         String get_country = country.getText().toString();
@@ -92,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this, "Survey One complete!", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(this, TechSurvey.class);
+            intent.putExtra("MAC", MacAdd);
             intent.putExtra("Name", get_name);
             intent.putExtra("Country", get_country);
             intent.putExtra("Gender", get_gender);
@@ -99,5 +107,31 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra("DOB", get_date);
             startActivity(intent);
         }
+    }
+
+    public static String getMacAddr() {
+        try {
+            List<NetworkInterface> all = Collections.list(NetworkInterface.getNetworkInterfaces());
+            for (NetworkInterface nif : all) {
+                if (!nif.getName().equalsIgnoreCase("wlan0")) continue;
+
+                byte[] macBytes = nif.getHardwareAddress();
+                if (macBytes == null) {
+                    return "";
+                }
+
+                StringBuilder res1 = new StringBuilder();
+                for (byte b : macBytes) {
+                    res1.append(String.format("%02X:",b));
+                }
+
+                if (res1.length() > 0) {
+                    res1.deleteCharAt(res1.length() - 1);
+                }
+                return res1.toString();
+            }
+        } catch (Exception ex) {
+        }
+        return "02:00:00:00:00:00";
     }
 }

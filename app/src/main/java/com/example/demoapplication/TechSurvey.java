@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class TechSurvey extends AppCompatActivity {
 
     private Spinner dropdown;
-    private String get_background, get_experience, get_language, get_education, get_name, get_country, get_gender, get_city, get_date;
+    private String get_background, get_experience, get_language, get_education, get_name, get_country, get_gender, get_city, get_date, get_MAC;
     private RadioButton background_yes, background_no, experience_yes, experience_no, language_yes, language_no, language_somewhat;
 
     @Override
@@ -48,6 +48,7 @@ public class TechSurvey extends AppCompatActivity {
         get_city = getIntent().getStringExtra("City");
         get_gender = getIntent().getStringExtra("Gender");
         get_date = getIntent().getStringExtra("DOB");
+        get_MAC = getIntent().getStringExtra("MAC");
     }
 
     public void onClick(View v) {
@@ -91,7 +92,7 @@ public class TechSurvey extends AppCompatActivity {
         }
         else{
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("Participants").document("123").set(map);
+            db.collection("Participants").document(get_MAC).set(map);
             Toast.makeText(TechSurvey.this, "Submitted", Toast.LENGTH_SHORT).show();
         }
     }

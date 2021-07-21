@@ -98,7 +98,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:ems="10"
-        android:fontFamily="sans-serif-thin"
+        android:fontFamily="sans-serif-light"
         android:hint="Lahore"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
