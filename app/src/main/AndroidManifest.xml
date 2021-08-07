@@ -12,9 +12,9 @@
         android:theme="@style/Theme.DemoApplication">
         <activity android:name=".TechSurvey"
             android:label="tech survey"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".Demographic">
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".Demographic">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

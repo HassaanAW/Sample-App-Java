@@ -8,8 +8,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,73 +24,137 @@ import java.util.HashMap;
 
 public class TechSurvey extends AppCompatActivity {
 
-    private Spinner dropdown;
-    private String get_background, get_experience, get_language, get_education, get_name, get_country, get_gender, get_city, get_date, get_MAC;
-    private RadioButton background_yes, background_no, experience_yes, experience_no, language_yes, language_no, language_somewhat;
+    private String get_age, get_region, get_ISP, get_gender, get_city, get_MAC;
+    private String get_degree, get_industry, get_security, get_course, get_sec_course, get_language;
+    private RadioButton degree_yes, degree_no, industry_yes, industry_no, security_yes,
+            security_no, course_yes, course_no, sec_course_yes, sec_course_no, programming_yes, programming_no;
+    private TextView security_ques, course_ques;
+    private LinearLayout securtiy_ques_layout, course_ques_layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tech_survey);
 
-        dropdown = findViewById(R.id.spinner1);
-        String[] items = new String[]{"School", "College", "Bachelors", "Masters", "PhD"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        dropdown.setAdapter(adapter);
+        degree_yes = (RadioButton) findViewById(R.id.radio4);
+        degree_no= (RadioButton) findViewById(R.id.radio5);
+        industry_yes = (RadioButton) findViewById(R.id.radio6);
+        industry_no = (RadioButton) findViewById(R.id.radio7);
+        security_yes = (RadioButton) findViewById(R.id.radio8);
+        security_no = (RadioButton) findViewById(R.id.radio9);
+        course_yes = (RadioButton) findViewById(R.id.radio10);
+        course_no = (RadioButton) findViewById(R.id.radio11);
+        sec_course_yes = (RadioButton) findViewById(R.id.radio13);
+        sec_course_no = (RadioButton) findViewById(R.id.radio14);
+        programming_yes = (RadioButton) findViewById(R.id.radio15);
+        programming_no = (RadioButton) findViewById(R.id.radio16);
 
-        background_yes = (RadioButton) findViewById(R.id.radio1);
-        background_no= (RadioButton) findViewById(R.id.radio2);
-        experience_yes = (RadioButton) findViewById(R.id.radio3);
-        experience_no = (RadioButton) findViewById(R.id.radio4);
-        language_yes = (RadioButton) findViewById(R.id.radio5);
-        language_no = (RadioButton) findViewById(R.id.radio6);
-        language_somewhat = (RadioButton) findViewById(R.id.radio7);
+        security_ques = (TextView) findViewById(R.id.textView5);
+        securtiy_ques_layout = (LinearLayout) findViewById(R.id.linearLayout8);
 
-        get_name = getIntent().getStringExtra("Name");
-        get_country = getIntent().getStringExtra("Country");
+        course_ques = (TextView) findViewById(R.id.textView7);
+        course_ques_layout = (LinearLayout) findViewById(R.id.linearLayout10);
+
+        industry_yes.setOnClickListener(checkOption);
+        industry_no.setOnClickListener(checkOption2);
+
+        course_yes.setOnClickListener(checkOption3);
+        course_no.setOnClickListener(checkOption4);
+
         get_city = getIntent().getStringExtra("City");
         get_gender = getIntent().getStringExtra("Gender");
-        get_date = getIntent().getStringExtra("DOB");
+        get_age = getIntent().getStringExtra("Age");
+        get_region = getIntent().getStringExtra("Region");
+        get_ISP = getIntent().getStringExtra("ISP");
         get_MAC = getIntent().getStringExtra("MAC");
     }
 
+    View.OnClickListener checkOption = new View.OnClickListener(){
+        public void onClick(View v) {
+            security_ques.setVisibility(View.VISIBLE);
+            securtiy_ques_layout.setVisibility(View.VISIBLE);
+        }
+    };
+
+    View.OnClickListener checkOption2 = new View.OnClickListener(){
+        public void onClick(View v) {
+            security_ques.setVisibility(View.GONE);
+            securtiy_ques_layout.setVisibility(View.GONE);
+        }
+    };
+
+    View.OnClickListener checkOption3 = new View.OnClickListener(){
+        public void onClick(View v) {
+            course_ques.setVisibility(View.VISIBLE);
+            course_ques_layout.setVisibility(View.VISIBLE);
+        }
+    };
+
+    View.OnClickListener checkOption4 = new View.OnClickListener(){
+        public void onClick(View v) {
+            course_ques.setVisibility(View.GONE);
+            course_ques_layout.setVisibility(View.GONE);
+        }
+    };
+
     public void onClick(View v) {
 
-        get_education = dropdown.getSelectedItem().toString();
-        // Getting background
-        if(background_yes.isChecked()){
-            get_background= background_yes.getText().toString();}
-        else if (background_no.isChecked()){
-            get_background = background_no.getText().toString();}
+        // Getting degree
+        if(degree_yes.isChecked()){
+            get_degree = degree_yes.getText().toString();}
+        else if (degree_no.isChecked()){
+            get_degree = degree_no.getText().toString();}
 
-        // Getting experience
-        if(experience_yes.isChecked()){
-            get_experience= experience_yes.getText().toString();}
-        else if (experience_no.isChecked()){
-            get_experience = experience_no.getText().toString();}
+        // Getting Industry Experience
+        if(industry_yes.isChecked()){
+            get_industry = industry_yes.getText().toString();}
+        else if (industry_no.isChecked()){
+            get_industry = industry_no.getText().toString();
+            get_security = "No"; }
 
-        // Getting language
-        if(language_yes.isChecked()){
-            get_language= language_yes.getText().toString();}
-        else if (language_no.isChecked()){
-            get_language = language_no.getText().toString();}
+        // Getting Security Field
+        if(security_yes.isChecked()){
+            get_security = security_yes.getText().toString();}
         else{
-            get_language = language_somewhat.getText().toString();
+            get_security = security_no.getText().toString();
         }
 
+        // Getting course
+        if(course_yes.isChecked()){
+            get_course = course_yes.getText().toString();}
+        else if (course_no.isChecked()){
+            get_course = course_no.getText().toString();
+            get_sec_course = "No"; }
+
+        // Getting Security course
+        if(sec_course_yes.isChecked()){
+            get_sec_course = sec_course_yes.getText().toString();}
+        else if (sec_course_no.isChecked()){
+            get_sec_course = sec_course_no.getText().toString();}
+
+        // Getting Language
+        if(programming_yes.isChecked()){
+            get_language = programming_yes.getText().toString();}
+        else if (programming_no.isChecked()){
+            get_language = programming_no.getText().toString();}
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("Name", get_name);
-        map.put("Country", get_country);
+
         map.put("Gender", get_gender);
+        map.put("Age", get_age);
         map.put("City", get_city);
-        map.put("DOB", get_date);
-        map.put("Education", get_education);
-        map.put("Background", get_background);
-        map.put("Experience", get_experience);
+        map.put("Region", get_region);
+        map.put("ISP", get_ISP);
+        map.put("Degree", get_degree);
+        map.put("Tech Industry", get_industry);
+        map.put("Security Field", get_security);
+        map.put("Taken Courses", get_course);
+        map.put("Security Courses", get_sec_course);
         map.put("Language", get_language);
 
-        if (TextUtils.isEmpty(get_language) || TextUtils.isEmpty(get_experience) || TextUtils.isEmpty(get_background) || TextUtils.isEmpty((get_education)) ){
+        if (TextUtils.isEmpty(get_language) || TextUtils.isEmpty(get_sec_course) || TextUtils.isEmpty(get_course) ||
+                TextUtils.isEmpty(get_security)  || TextUtils.isEmpty(get_industry)  || TextUtils.isEmpty(get_degree) ){
             Toast.makeText(TechSurvey.this, "Please fill missing fields", Toast.LENGTH_SHORT).show();
         }
         else{
@@ -97,12 +164,9 @@ public class TechSurvey extends AppCompatActivity {
         }
     }
     public void Previous(View v){
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("Name", get_name);
-        intent.putExtra("Country", get_country);
+        Intent intent = new Intent(this, Demographic.class);
         intent.putExtra("Gender", get_gender);
         intent.putExtra("City", get_city);
-        intent.putExtra("DOB", get_date);
         startActivity(intent);
     }
 }
