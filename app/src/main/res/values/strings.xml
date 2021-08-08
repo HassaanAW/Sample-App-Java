@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">DemoApplication</string>
     <string name="Ferret">Ferret</string>
-    <string name="Title">Demographic Survey</string>
-    <string name="Title2">Tech Survey</string>
+    <string name="Title">Demographic Details</string>
+    <string name="Title2">Tech Expertise</string>
+    <string name="Title3">Smart Devices</string>
     <string name="Q1">Age Group</string>
     <string name="Q2">Gender</string>
     <string name="Q3">City</string>
@@ -14,6 +15,7 @@
     <string name="Q9">Have you taken courses (online or physical) related to computer science in the past two years?</string>
     <string name="Q10">Have you taken any security related courses?</string>
     <string name="Q11">Are you proficient in any programming language?</string>
-
+    <string name="Q12">Please list all the smart devices that you have at home (connected to WiFi).</string>
+    <string name="Q13">What factor do you consider as your first priority while purchasing a smart home device? </string>
 
 </resources>

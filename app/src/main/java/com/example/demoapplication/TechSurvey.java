@@ -29,7 +29,7 @@ public class TechSurvey extends AppCompatActivity {
     private RadioButton degree_yes, degree_no, industry_yes, industry_no, security_yes,
             security_no, course_yes, course_no, sec_course_yes, sec_course_no, programming_yes, programming_no;
     private TextView security_ques, course_ques;
-    private LinearLayout securtiy_ques_layout, course_ques_layout;
+    private LinearLayout security_ques_layout, course_ques_layout;
 
 
     @Override
@@ -51,7 +51,7 @@ public class TechSurvey extends AppCompatActivity {
         programming_no = (RadioButton) findViewById(R.id.radio16);
 
         security_ques = (TextView) findViewById(R.id.textView5);
-        securtiy_ques_layout = (LinearLayout) findViewById(R.id.linearLayout8);
+        security_ques_layout = (LinearLayout) findViewById(R.id.linearLayout8);
 
         course_ques = (TextView) findViewById(R.id.textView7);
         course_ques_layout = (LinearLayout) findViewById(R.id.linearLayout10);
@@ -73,14 +73,14 @@ public class TechSurvey extends AppCompatActivity {
     View.OnClickListener checkOption = new View.OnClickListener(){
         public void onClick(View v) {
             security_ques.setVisibility(View.VISIBLE);
-            securtiy_ques_layout.setVisibility(View.VISIBLE);
+            security_ques_layout.setVisibility(View.VISIBLE);
         }
     };
 
     View.OnClickListener checkOption2 = new View.OnClickListener(){
         public void onClick(View v) {
             security_ques.setVisibility(View.GONE);
-            securtiy_ques_layout.setVisibility(View.GONE);
+            security_ques_layout.setVisibility(View.GONE);
         }
     };
 
@@ -139,28 +139,31 @@ public class TechSurvey extends AppCompatActivity {
         else if (programming_no.isChecked()){
             get_language = programming_no.getText().toString();}
 
-        HashMap<String, Object> map = new HashMap<>();
-
-        map.put("Gender", get_gender);
-        map.put("Age", get_age);
-        map.put("City", get_city);
-        map.put("Region", get_region);
-        map.put("ISP", get_ISP);
-        map.put("Degree", get_degree);
-        map.put("Tech Industry", get_industry);
-        map.put("Security Field", get_security);
-        map.put("Taken Courses", get_course);
-        map.put("Security Courses", get_sec_course);
-        map.put("Language", get_language);
-
         if (TextUtils.isEmpty(get_language) || TextUtils.isEmpty(get_sec_course) || TextUtils.isEmpty(get_course) ||
                 TextUtils.isEmpty(get_security)  || TextUtils.isEmpty(get_industry)  || TextUtils.isEmpty(get_degree) ){
             Toast.makeText(TechSurvey.this, "Please fill missing fields", Toast.LENGTH_SHORT).show();
         }
         else{
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            db.collection("Participants").document(get_MAC).set(map);
-            Toast.makeText(TechSurvey.this, "Submitted", Toast.LENGTH_SHORT).show();
+//            FirebaseFirestore db = FirebaseFirestore.getInstance();
+//            db.collection("Participants").document(get_MAC).set(map);
+//            Toast.makeText(TechSurvey.this, "Submitted", Toast.LENGTH_SHORT).show();
+            Toast.makeText(TechSurvey.this, "Survey Two complete!", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(this, SmartDevice.class);
+            intent.putExtra("MAC", get_MAC);
+            intent.putExtra("Age", get_age);
+            intent.putExtra("Gender", get_gender);
+            intent.putExtra("City", get_city);
+            intent.putExtra("Region", get_region);
+            intent.putExtra("ISP", get_ISP);
+
+            intent.putExtra("Degree", get_degree);
+            intent.putExtra("Industry", get_industry);
+            intent.putExtra("Field", get_security);
+            intent.putExtra("Courses", get_course);
+            intent.putExtra("SecurityCourse", get_sec_course);
+            intent.putExtra("Language", get_language);
+            startActivity(intent);
         }
     }
     public void Previous(View v){
